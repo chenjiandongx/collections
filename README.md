@@ -1,6 +1,6 @@
 # go-queue
 
-[![GoDoc](https://godoc.org/github.com/chenjiandongx/go-queue?status.svg)](https://godoc.org/github.com/chenjiandongx/go-queue)
+[![Build Status](https://travis-ci.org/chenjiandongx/go-queue.svg?branch=master)](https://travis-ci.org/chenjiandongx/go-queue) [![GoDoc](https://godoc.org/github.com/chenjiandongx/go-queue?status.svg)](https://godoc.org/github.com/chenjiandongx/go-queue)
 > Golang 实现的线程安全队列
 
 ### Install
