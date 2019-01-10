@@ -1,16 +1,17 @@
-package go_collections
+package queue
 
 import (
 	"container/list"
 	"sync"
 )
 
+// 后进先出队列
 type LifoQueue struct {
 	data *list.List
 	mut  *sync.RWMutex
 }
 
-// 后进先出队列
+// 工厂函数 生成 `后进先出队列`
 func NewLifoQueue() *LifoQueue {
 	return &LifoQueue{data: list.New(), mut: new(sync.RWMutex)}
 }

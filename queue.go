@@ -1,4 +1,4 @@
-package go_collections
+package queue
 
 import (
 	"container/list"
@@ -19,12 +19,13 @@ import (
 	Unlock()	//写解锁
 */
 
+// 先进先出队列
 type Queue struct {
 	data *list.List
 	mut  *sync.RWMutex
 }
 
-// 先进先出队列
+// 工厂函数 生成 `先进先出队列`
 func NewQueue() *Queue {
 	return &Queue{data: list.New(), mut: new(sync.RWMutex)}
 }

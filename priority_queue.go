@@ -1,10 +1,11 @@
-package go_collections
+package queue
 
 import (
 	"container/heap"
 	"sync"
 )
 
+// 优先队列
 type PriorityQueue struct {
 	nodes []*PqNode
 	mut   *sync.RWMutex
@@ -17,7 +18,7 @@ type PqNode struct {
 	index    int
 }
 
-// 优先级队列
+// 工厂函数 生成 `优先队列`
 func NewPriorityQueue() *PriorityQueue {
 	pq := &PriorityQueue{mut: new(sync.RWMutex)}
 	heap.Init(pq)

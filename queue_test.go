@@ -1,4 +1,4 @@
-package go_collections
+package queue
 
 import (
 	"testing"
