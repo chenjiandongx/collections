@@ -26,11 +26,15 @@ func NewPriorityQueue() *priorityQueue {
 
 // 入队操作
 func (pq *priorityQueue) Put(v *PqNode) {
+	defer pq.mut.Unlock()
+	pq.mut.Lock()
 	heap.Push(pq, v)
 }
 
 // 出队操作
 func (pq *priorityQueue) Get() (interface{}, bool) {
+	defer pq.mut.Unlock()
+	pq.mut.Lock()
 	if len(pq.nodes) > 0 {
 		item := heap.Pop(pq)
 		return item, true
@@ -70,8 +74,6 @@ func (pq priorityQueue) Swap(i, j int) {
 
 // `Heap` 接口 Push()
 func (pq *priorityQueue) Push(v interface{}) {
-	defer pq.mut.Unlock()
-	pq.mut.Lock()
 	item := v.(*PqNode)
 	item.index = len(pq.nodes)
 	pq.nodes = append(pq.nodes, item)
@@ -80,8 +82,6 @@ func (pq *priorityQueue) Push(v interface{}) {
 
 // `Heap` 接口 Pop()
 func (pq *priorityQueue) Pop() interface{} {
-	defer pq.mut.Unlock()
-	pq.mut.Lock()
 	old := *pq
 	n := len(old.nodes)
 	item := old.nodes[n-1]
