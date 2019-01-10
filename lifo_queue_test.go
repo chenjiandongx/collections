@@ -6,10 +6,8 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-const nums = 1000
-
-func TestQueue(t *testing.T) {
-	q := NewQueue()
+func TestLifoQueue(t *testing.T) {
+	q := NewLifoQueue()
 
 	var item interface{}
 	var ok bool
@@ -17,7 +15,7 @@ func TestQueue(t *testing.T) {
 	for i := 0; i < nums; i++ {
 		q.Put(i)
 	}
-	for i := 0; i < nums; i++ {
+	for i := nums - 1; i >= 0; i-- {
 		item, ok = q.Get()
 		assert.Equal(t, i, item.(int))
 		assert.Equal(t, ok, true)
@@ -26,7 +24,7 @@ func TestQueue(t *testing.T) {
 	item, ok = q.Get()
 	assert.Equal(t, nil, item)
 	assert.Equal(t, ok, false)
-
+	
 	item, ok = q.Get()
 	assert.Equal(t, nil, item)
 	assert.Equal(t, ok, false)
