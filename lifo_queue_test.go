@@ -24,7 +24,7 @@ func TestLifoQueue(t *testing.T) {
 	item, ok = q.Get()
 	assert.Equal(t, nil, item)
 	assert.Equal(t, ok, false)
-	
+
 	item, ok = q.Get()
 	assert.Equal(t, nil, item)
 	assert.Equal(t, ok, false)

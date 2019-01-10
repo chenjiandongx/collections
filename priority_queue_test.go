@@ -3,7 +3,7 @@ package go_collections
 import (
 	"math/rand"
 	"testing"
-	
+
 	"github.com/stretchr/testify/assert"
 )
 
