@@ -19,25 +19,25 @@ import (
 	Unlock()	//写解锁
 */
 
-type queue struct {
+type Queue struct {
 	data *list.List
 	mut  *sync.RWMutex
 }
 
 // 先进先出队列
-func NewQueue() *queue {
-	return &queue{data: list.New(), mut: new(sync.RWMutex)}
+func NewQueue() *Queue {
+	return &Queue{data: list.New(), mut: new(sync.RWMutex)}
 }
 
 // 入队操作
-func (q *queue) Put(v interface{}) {
+func (q *Queue) Put(v interface{}) {
 	defer q.mut.Unlock()
 	q.mut.Lock()
 	q.data.PushFront(v)
 }
 
 // 出队操作
-func (q *queue) Get() (interface{}, bool) {
+func (q *Queue) Get() (interface{}, bool) {
 	defer q.mut.Unlock()
 	q.mut.Lock()
 	if q.data.Len() > 0 {
@@ -50,14 +50,14 @@ func (q *queue) Get() (interface{}, bool) {
 }
 
 // 返回队列长度
-func (q *queue) Qsize() int {
+func (q *Queue) Qsize() int {
 	defer q.mut.RUnlock()
 	q.mut.RLock()
 	return q.data.Len()
 }
 
 // 判断队列是否为空
-func (q *queue) IsEmpty() bool {
+func (q *Queue) IsEmpty() bool {
 	defer q.mut.RUnlock()
 	q.mut.RLock()
 	return !(q.data.Len() > 0)

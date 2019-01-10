@@ -5,7 +5,7 @@ import (
 	"sync"
 )
 
-type priorityQueue struct {
+type PriorityQueue struct {
 	nodes []*PqNode
 	mut   *sync.RWMutex
 }
@@ -18,21 +18,21 @@ type PqNode struct {
 }
 
 // 优先级队列
-func NewPriorityQueue() *priorityQueue {
-	pq := &priorityQueue{mut: new(sync.RWMutex)}
+func NewPriorityQueue() *PriorityQueue {
+	pq := &PriorityQueue{mut: new(sync.RWMutex)}
 	heap.Init(pq)
 	return pq
 }
 
 // 入队操作
-func (pq *priorityQueue) Put(v *PqNode) {
+func (pq *PriorityQueue) Put(v *PqNode) {
 	defer pq.mut.Unlock()
 	pq.mut.Lock()
 	heap.Push(pq, v)
 }
 
 // 出队操作
-func (pq *priorityQueue) Get() (interface{}, bool) {
+func (pq *PriorityQueue) Get() (interface{}, bool) {
 	defer pq.mut.Unlock()
 	pq.mut.Lock()
 	if len(pq.nodes) > 0 {
@@ -43,37 +43,37 @@ func (pq *priorityQueue) Get() (interface{}, bool) {
 }
 
 // 返回队列长度
-func (pq priorityQueue) Qsize() int {
+func (pq PriorityQueue) Qsize() int {
 	defer pq.mut.RUnlock()
 	pq.mut.RLock()
 	return len(pq.nodes)
 }
 
 // 判断队列是否为空
-func (pq *priorityQueue) IsEmpty() bool {
+func (pq *PriorityQueue) IsEmpty() bool {
 	defer pq.mut.RUnlock()
 	pq.mut.RLock()
 	return !(len(pq.nodes) > 0)
 }
 
 // `Sort` 接口 Len()
-func (pq priorityQueue) Len() int {
+func (pq PriorityQueue) Len() int {
 	return len(pq.nodes)
 }
 
 // `Sort` 接口 Less()
-func (pq priorityQueue) Less(i, j int) bool {
+func (pq PriorityQueue) Less(i, j int) bool {
 	return pq.nodes[i].Priority > pq.nodes[j].Priority
 }
 
 // `Sort` 接口 Swap()
-func (pq priorityQueue) Swap(i, j int) {
+func (pq PriorityQueue) Swap(i, j int) {
 	pq.nodes[i], pq.nodes[j] = pq.nodes[j], pq.nodes[i]
 	pq.nodes[i].index, pq.nodes[j].index = i, j
 }
 
 // `Heap` 接口 Push()
-func (pq *priorityQueue) Push(v interface{}) {
+func (pq *PriorityQueue) Push(v interface{}) {
 	item := v.(*PqNode)
 	item.index = len(pq.nodes)
 	pq.nodes = append(pq.nodes, item)
@@ -81,7 +81,7 @@ func (pq *priorityQueue) Push(v interface{}) {
 }
 
 // `Heap` 接口 Pop()
-func (pq *priorityQueue) Pop() interface{} {
+func (pq *PriorityQueue) Pop() interface{} {
 	old := *pq
 	n := len(old.nodes)
 	item := old.nodes[n-1]
