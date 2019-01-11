@@ -1,7 +1,7 @@
 # go-queue
 
 [![Build Status](https://travis-ci.org/chenjiandongx/go-queue.svg?branch=master)](https://travis-ci.org/chenjiandongx/go-queue) [![GoDoc](https://godoc.org/github.com/chenjiandongx/go-queue?status.svg)](https://godoc.org/github.com/chenjiandongx/go-queue) [![Go Report Card](https://goreportcard.com/badge/github.com/chenjiandongx/go-queue)](https://goreportcard.com/report/github.com/chenjiandongx/go-queue)
-> Golang 实现的线程安全队列
+> Golang 实现的线程安全队列，灵感来自 [queue](https://docs.python.org/3/library/queue.html)
 
 ### Install
 ```bash
