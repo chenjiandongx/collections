@@ -1,4 +1,4 @@
-package queue
+package collections
 
 import (
 	"container/heap"
