@@ -112,7 +112,7 @@ func TestIter(t *testing.T) {
 		if k.(int) != index || v.(int) != index+1 || !ok {
 			t.Error()
 		}
-		index += 1
+		index ++
 	}
 
 	index = 0
@@ -121,6 +121,6 @@ func TestIter(t *testing.T) {
 		if k.(int) != index || v.(int) != index+1 || !ok {
 			t.Error()
 		}
-		index += 1
+		index ++
 	}
 }

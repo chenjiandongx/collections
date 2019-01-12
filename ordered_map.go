@@ -33,7 +33,7 @@ func (om *OrderedMap) Set(key, value interface{}) {
 	om.items[key] = newNode
 	om.tail.next = newNode
 	om.tail = newNode
-	om.len += 1
+	om.len ++
 }
 
 func (om *OrderedMap) Get(key interface{}) (interface{}, bool) {
@@ -55,7 +55,7 @@ func (om *OrderedMap) Delete(key interface{}) bool {
 	}
 	delete(om.items, key)
 	item = nil
-	om.len -= 1
+	om.len --
 	return true
 }
 
