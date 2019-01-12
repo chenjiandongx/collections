@@ -12,9 +12,8 @@ type PriorityQueue struct {
 
 // PriorityQueue Node
 type PqNode struct {
-	Value    string
-	Priority int
-	index    int
+	Value           string
+	Priority, index int
 }
 
 func NewPriorityQueue() *PriorityQueue {

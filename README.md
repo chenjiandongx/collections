@@ -87,9 +87,15 @@ fmt.Println(q.Qsize())
 📝 方法集
 ```shell
 Get()(interface{}, bool)    // 出队
-Put(v interface{})          // 入队
+Put(v *PqNode)              // 入队
 Qsize() int                 // 返回队列长度
 IsEmpty() bool              // 判断队列是否为空
+
+// 优先队列节点
+type PqNode struct {
+    Value           string
+    Priority, index int
+}
 ```
 
 ✏️ 示例
@@ -158,42 +164,6 @@ fmt.Println(item, ok)
 
 item, ok = q.GetRight()
 fmt.Println(item, ok)
-```
-
-### OrderedMap
-> 有序 Map，接口设计参考 [cevaris/ordered_map](https://github.com/cevaris/ordered_map)
-
-📝 方法集
-```shell
-Set(key, value interface{})                 // 新增键值对
-Get(key interface{}) (interface{}, bool)    // 取值
-Delete(key interface{}) bool                // 删除键
-Iter() (interface{}, interface{}, bool)     // 遍历
-Len() int                                   // 键值对数量
-// 指针回退到 Head，遍历时 current 指针会向后移动 BackToHead 使其移动到头指针，以便下一次从头遍历
-BackToHead()                               
-```
-
-✏️ 示例
-```go
-maxNum := 100
-om := collections.NewOrderedMap()
-for i := 0; i < maxNum; i++ {
-    om.Set(i, i+1)
-}
-
-fmt.Println(om.Len())
-om.Delete(0)
-fmt.Println(om.Len())
-
-for k, v, ok := om.Iter(); ok; k, v, ok = om.Iter() {
-    fmt.Println(k, v)
-}
-
-om.BackToHead()
-for k, v, ok := om.Iter(); ok; k, v, ok = om.Iter() {
-    fmt.Println(k, v)
-}
 ```
 
 ### OrderedMap
