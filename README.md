@@ -8,6 +8,7 @@
 * [Queue - 先进先出队列](#Queue)
 * [LifoQueue - 后进先出队列](#LifoQueue)
 * [PriorityQueue - 优先队列](#PriorityQueue)
+* [Deque - 双端队列](#Deque)
 * [OrderedMap - 有序 Map](#OrderedMap)
 
 ### 🔰 安装&引用
@@ -112,6 +113,53 @@ fmt.Println(q.IsEmpty())
 fmt.Println(q.Qsize())
 ```
 
+### Deque
+> 双端队列（线程安全）
+
+📝 方法集
+```shell
+GetLeft()(interface{}, bool)        // 左边出队
+GetRight()(interface{}, bool)       // 右边出队
+PutLeft(v interface{})              // 左边入队
+PutRight(v interface{})             // 右边入队
+Qsize() int                         // 返回队列长度
+IsEmpty() bool                      // 判断队列是否为空
+```
+
+✏️ 示例
+```go
+var nums = 1000
+q := collections.NewDeque()
+
+var item interface{}
+var ok bool
+
+for i := 0; i < nums; i++ {
+    q.PutLeft(i)
+}
+fmt.Println(q.Qsize())
+
+for i := nums - 1; i >= 0; i-- {
+    q.PutRight(i)
+}
+fmt.Println(q.Qsize())
+
+for i := 0; i < nums; i++ {
+    item, ok = q.GetRight()
+    fmt.Println(item, ok)
+}
+for i := nums - 1; i >= 0; i-- {
+    item, ok = q.GetLeft()
+    fmt.Println(item, ok)
+}
+
+item, ok = q.GetLeft()
+fmt.Println(item, ok)
+
+item, ok = q.GetRight()
+fmt.Println(item, ok)
+```
+
 ### OrderedMap
 > 有序 Map，接口设计参考 [cevaris/ordered_map](https://github.com/cevaris/ordered_map)
 
@@ -121,8 +169,9 @@ Set(key, value interface{})                 // 新增键值对
 Get(key interface{}) (interface{}, bool)    // 取值
 Delete(key interface{}) bool                // 删除键
 Iter() (interface{}, interface{}, bool)     // 遍历
-BackToHead()                                // 指针回退到 Head，遍历时 current 指针会移动
 Len() int                                   // 键值对数量
+// 指针回退到 Head，遍历时 current 指针会向后移动 BackToHead 使其移动到头指针，以便下一次从头遍历
+BackToHead()                               
 ```
 
 ✏️ 示例
@@ -143,7 +192,43 @@ for k, v, ok := om.Iter(); ok; k, v, ok = om.Iter() {
 
 om.BackToHead()
 for k, v, ok := om.Iter(); ok; k, v, ok = om.Iter() {
-	fmt.Println(k, v)
+    fmt.Println(k, v)
+}
+```
+
+### OrderedMap
+> 有序 Map，接口设计参考 [cevaris/ordered_map](https://github.com/cevaris/ordered_map)
+
+📝 方法集
+```shell
+Set(key, value interface{})                 // 新增键值对
+Get(key interface{}) (interface{}, bool)    // 取值
+Delete(key interface{}) bool                // 删除键
+Iter() (interface{}, interface{}, bool)     // 遍历
+Len() int                                   // 键值对数量
+// 指针回退到 Head，遍历时 current 指针会向后移动 BackToHead 使其移动到头指针，以便下一次从头遍历
+BackToHead()                               
+```
+
+✏️ 示例
+```go
+maxNum := 100
+om := collections.NewOrderedMap()
+for i := 0; i < maxNum; i++ {
+    om.Set(i, i+1)
+}
+
+fmt.Println(om.Len())
+om.Delete(0)
+fmt.Println(om.Len())
+
+for k, v, ok := om.Iter(); ok; k, v, ok = om.Iter() {
+    fmt.Println(k, v)
+}
+
+om.BackToHead()
+for k, v, ok := om.Iter(); ok; k, v, ok = om.Iter() {
+    fmt.Println(k, v)
 }
 ```
 

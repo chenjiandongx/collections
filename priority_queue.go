@@ -5,34 +5,30 @@ import (
 	"sync"
 )
 
-// 优先队列
 type PriorityQueue struct {
 	nodes []*PqNode
 	mut   *sync.RWMutex
 }
 
-// 优先队列节点
+// PriorityQueue Node
 type PqNode struct {
 	Value    string
 	Priority int
 	index    int
 }
 
-// 工厂函数 生成 `优先队列`
 func NewPriorityQueue() *PriorityQueue {
 	pq := &PriorityQueue{mut: new(sync.RWMutex)}
 	heap.Init(pq)
 	return pq
 }
 
-// 入队操作
 func (pq *PriorityQueue) Put(v *PqNode) {
 	defer pq.mut.Unlock()
 	pq.mut.Lock()
 	heap.Push(pq, v)
 }
 
-// 出队操作
 func (pq *PriorityQueue) Get() (interface{}, bool) {
 	defer pq.mut.Unlock()
 	pq.mut.Lock()
@@ -43,37 +39,35 @@ func (pq *PriorityQueue) Get() (interface{}, bool) {
 	return nil, false
 }
 
-// 返回队列长度
 func (pq PriorityQueue) Qsize() int {
 	defer pq.mut.RUnlock()
 	pq.mut.RLock()
 	return len(pq.nodes)
 }
 
-// 判断队列是否为空
 func (pq *PriorityQueue) IsEmpty() bool {
 	defer pq.mut.RUnlock()
 	pq.mut.RLock()
 	return !(len(pq.nodes) > 0)
 }
 
-// `Sort` 接口 Len()
+// `Sort` interface Len()
 func (pq PriorityQueue) Len() int {
 	return len(pq.nodes)
 }
 
-// `Sort` 接口 Less()
+// `Sort` interface Less()
 func (pq PriorityQueue) Less(i, j int) bool {
 	return pq.nodes[i].Priority > pq.nodes[j].Priority
 }
 
-// `Sort` 接口 Swap()
+// `Sort` interface Swap()
 func (pq PriorityQueue) Swap(i, j int) {
 	pq.nodes[i], pq.nodes[j] = pq.nodes[j], pq.nodes[i]
 	pq.nodes[i].index, pq.nodes[j].index = i, j
 }
 
-// `Heap` 接口 Push()
+// `Heap` interface Push()
 func (pq *PriorityQueue) Push(v interface{}) {
 	item := v.(*PqNode)
 	item.index = len(pq.nodes)
@@ -81,7 +75,7 @@ func (pq *PriorityQueue) Push(v interface{}) {
 	heap.Fix(pq, item.index)
 }
 
-// `Heap` 接口 Pop()
+// `Heap` interface Pop()
 func (pq *PriorityQueue) Pop() interface{} {
 	old := *pq
 	n := len(old.nodes)

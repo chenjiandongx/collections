@@ -5,25 +5,21 @@ import (
 	"sync"
 )
 
-// 后进先出队列
 type LifoQueue struct {
 	data *list.List
 	mut  *sync.RWMutex
 }
 
-// 工厂函数 生成 `后进先出队列`
 func NewLifoQueue() *LifoQueue {
 	return &LifoQueue{data: list.New(), mut: new(sync.RWMutex)}
 }
 
-// 入队操作
 func (q *LifoQueue) Put(v interface{}) {
 	defer q.mut.Unlock()
 	q.mut.Lock()
 	q.data.PushFront(v)
 }
 
-// 出队操作
 func (q *LifoQueue) Get() (interface{}, bool) {
 	defer q.mut.Unlock()
 	q.mut.Lock()
@@ -36,14 +32,12 @@ func (q *LifoQueue) Get() (interface{}, bool) {
 	return nil, false
 }
 
-// 返回队列长度
 func (q *LifoQueue) Qsize() int {
 	defer q.mut.RUnlock()
 	q.mut.RLock()
 	return q.data.Len()
 }
 
-// 判断队列是否为空
 func (q *LifoQueue) IsEmpty() bool {
 	defer q.mut.RUnlock()
 	q.mut.RLock()
