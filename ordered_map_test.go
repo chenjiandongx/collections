@@ -8,21 +8,21 @@ import (
 
 const maxNum = 100
 
-func BenchmarkThisSet(b *testing.B) {
+func BenchmarkCollectionsSet(b *testing.B) {
 	om := NewOrderedMap()
 	for i := 0; i < b.N; i++ {
 		om.Set(i, i)
 	}
 }
 
-func BenchmarkThatSet(b *testing.B) {
+func BenchmarkCevarisSet(b *testing.B) {
 	om := ordered_map.NewOrderedMap()
 	for i := 0; i < b.N; i++ {
 		om.Set(i, i)
 	}
 }
 
-func BenchmarkThisGet(b *testing.B) {
+func BenchmarkCollectionsGet(b *testing.B) {
 	om := NewOrderedMap()
 	for i := 0; i < b.N; i++ {
 		om.Set(i, i)
@@ -32,7 +32,7 @@ func BenchmarkThisGet(b *testing.B) {
 	}
 }
 
-func BenchmarkThatGet(b *testing.B) {
+func BenchmarkCevarisGet(b *testing.B) {
 	om := ordered_map.NewOrderedMap()
 	for i := 0; i < b.N; i++ {
 		om.Set(i, i)
@@ -42,7 +42,7 @@ func BenchmarkThatGet(b *testing.B) {
 	}
 }
 
-func BenchmarkThisIter(b *testing.B) {
+func BenchmarkCollectionsIter(b *testing.B) {
 	om := NewOrderedMap()
 	for i := 0; i < b.N; i++ {
 		om.Set(i, i)
@@ -52,7 +52,7 @@ func BenchmarkThisIter(b *testing.B) {
 	}
 }
 
-func BenchmarkThatIter(b *testing.B) {
+func BenchmarkCevarisIter(b *testing.B) {
 	om := ordered_map.NewOrderedMap()
 	for i := 0; i < b.N; i++ {
 		om.Set(i, i)

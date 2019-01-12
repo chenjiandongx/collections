@@ -55,17 +55,17 @@ func benchmark(r tester, b *testing.B) {
 	}
 }
 
-func BenchmarkMap10e1(b *testing.B)   { benchmark(genMap(10e1), b) }
-func BenchmarkSlice10e1(b *testing.B) { benchmark(genSlice(10e1), b) }
-func BenchmarkMap10e2(b *testing.B)   { benchmark(genMap(10e2), b) }
-func BenchmarkSlice10e2(b *testing.B) { benchmark(genSlice(10e2), b) }
-func BenchmarkMap10e3(b *testing.B)   { benchmark(genMap(10e3), b) }
-func BenchmarkSlice10e3(b *testing.B) { benchmark(genSlice(10e3), b) }
-func BenchmarkMap10e4(b *testing.B)   { benchmark(genMap(10e4), b) }
-func BenchmarkSlice10e4(b *testing.B) { benchmark(genSlice(10e4), b) }
-func BenchmarkMap10e5(b *testing.B)   { benchmark(genMap(10e5), b) }
-func BenchmarkSlice10e5(b *testing.B) { benchmark(genSlice(10e5), b) }
-func BenchmarkMap10e6(b *testing.B)   { benchmark(genMap(10e6), b) }
-func BenchmarkSlice10e6(b *testing.B) { benchmark(genSlice(10e6), b) }
-func BenchmarkMap10e7(b *testing.B)   { benchmark(genMap(10e7), b) }
-func BenchmarkSlice10e7(b *testing.B) { benchmark(genSlice(10e7), b) }
+//func BenchmarkMap10e1(b *testing.B)   { benchmark(genMap(10e1), b) }
+//func BenchmarkSlice10e1(b *testing.B) { benchmark(genSlice(10e1), b) }
+//func BenchmarkMap10e2(b *testing.B)   { benchmark(genMap(10e2), b) }
+//func BenchmarkSlice10e2(b *testing.B) { benchmark(genSlice(10e2), b) }
+//func BenchmarkMap10e3(b *testing.B)   { benchmark(genMap(10e3), b) }
+//func BenchmarkSlice10e3(b *testing.B) { benchmark(genSlice(10e3), b) }
+//func BenchmarkMap10e4(b *testing.B)   { benchmark(genMap(10e4), b) }
+//func BenchmarkSlice10e4(b *testing.B) { benchmark(genSlice(10e4), b) }
+//func BenchmarkMap10e5(b *testing.B)   { benchmark(genMap(10e5), b) }
+//func BenchmarkSlice10e5(b *testing.B) { benchmark(genSlice(10e5), b) }
+//func BenchmarkMap10e6(b *testing.B)   { benchmark(genMap(10e6), b) }
+//func BenchmarkSlice10e6(b *testing.B) { benchmark(genSlice(10e6), b) }
+//func BenchmarkMap10e7(b *testing.B)   { benchmark(genMap(10e7), b) }
+//func BenchmarkSlice10e7(b *testing.B) { benchmark(genSlice(10e7), b) }
