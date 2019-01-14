@@ -31,7 +31,7 @@ func (c *Counter) GetAll() []Item {
 
 func (c *Counter) Top(n int) []Item {
 	sortItems := c.sortMap()
-	if n > c.Len() || n < 0{
+	if n > c.Len() || n < 0 {
 		n = c.Len()
 	}
 	return sortItems[:n]
