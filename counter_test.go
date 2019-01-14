@@ -15,8 +15,8 @@ func TestEmptyCounter(t *testing.T) {
 
 func TestCounter(t *testing.T) {
 	c := NewCounter()
-	c.Add("a", "b", "c", "d", "a", "c")
-	assert.Equal(t, c.Top(2), []Item{{"a", 2}, {"c", 2}})
+	c.Add("a", "b", "c", "d", "a", "c", "c")
+	assert.Equal(t, c.Top(2), []Item{{"c", 3}, {"a", 2}})
 	assert.Equal(t, c.Get("A"), 0)
 	assert.Equal(t, c.Get("a"), 2)
 	assert.Equal(t, c.Get("b"), 1)
