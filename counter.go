@@ -17,7 +17,7 @@ func NewCounter() *Counter {
 
 func (c *Counter) Add(keys ...interface{}) {
 	for i := 0; i < len(keys); i++ {
-		c.kv[keys[i]] ++
+		c.kv[keys[i]]++
 	}
 }
 
