@@ -10,6 +10,7 @@
 * [PriorityQueue - 优先队列](#PriorityQueue)
 * [Deque - 双端队列](#Deque)
 * [OrderedMap - 有序 Map](#OrderedMap)
+* [Counter - 计数器](#Counter)
 
 ### 🔰 安装&引用
 ```bash
@@ -226,8 +227,39 @@ BenchmarkCevarisGet-8            1000000              1281 ns/op             334
 BenchmarkCollectionsIter-8       2000000               670 ns/op             187 B/op          3 allocs/op
 BenchmarkCevarisIter-8           1000000              1341 ns/op             366 B/op          4 allocs/op
 ```
-**collections.OrderedMap Win 🖖 性能+内存占用全部占优 🚀** 大家以后可以使用本项目的 OrderedMap 了，有测试有真相！
+**collections.OrderedMap Win 🖖 性能+内存占用全部占优 🚀**
 
+### Counter
+> 计数器
+
+📝 方法集
+```shell
+// key-value item
+type Item struct {
+    k interface{}
+    v int
+}
+
+Add(keys ...interface{})            // 新增 item
+Get(key interface{}) int            // 获取 key 计数
+GetAll() []Item                     // 获取全部 key 计数
+Top(n int) []Item                   // 获取前 key 计数
+Delete(key interface{}) bool        // 删除 key，成功返回 true，key 不存在返回 false
+Len() int                           // key 数量
+```
+
+✏️ 示例
+```go
+c := collections.NewCounter()
+c.Add("a", "b", "c", "d", "a", "c")
+fmt.Println(c.Get("A"))
+fmt.Println(c.Get("a"))
+fmt.Println(c.Get("b"))
+fmt.Println(c.Top(2))
+fmt.Println(c.Len())
+fmt.Println(c.All())
+c.Delete("a")
+```
 
 ### 📃 License
 MIT [©chenjiandongx](http://github.com/chenjiandongx)
