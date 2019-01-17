@@ -2,7 +2,7 @@
 
 > Golang 实现的 collections 模块，灵感来自 [Python queue](https://docs.python.org/3/library/queue.html) 和 [Python collections](https://docs.python.org/3/library/collections.html)
 
-[![Build Status](https://travis-ci.org/chenjiandongx/collections.svg?branch=master)](https://travis-ci.org/chenjiandongx/collections) [![Go Report Card](https://goreportcard.com/badge/github.com/chenjiandongx/collections)](https://goreportcard.com/report/github.com/chenjiandongx/collections) [![GoDoc](https://godoc.org/github.com/chenjiandongx/collections?status.svg)](https://godoc.org/github.com/chenjiandongx/collections)
+[![Build Status](https://travis-ci.org/chenjiandongx/collections.svg?branch=master)](https://travis-ci.org/chenjiandongx/collections) [![Go Report Card](https://goreportcard.com/badge/github.com/chenjiandongx/collections)](https://goreportcard.com/report/github.com/chenjiandongx/collections) [![License: MIT](https://img.shields.io/badge/License-MIT-brightgreen.svg)](https://opensource.org/licenses/MIT) [![GoDoc](https://godoc.org/github.com/chenjiandongx/collections?status.svg)](https://godoc.org/github.com/chenjiandongx/collections)
 
 ## 📚 目录
 * [Queue - 先进先出队列](#Queue)
