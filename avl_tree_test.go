@@ -50,5 +50,6 @@ func BenchmarkAVLInsert10e4(b *testing.B) { genAVL(10e4) }
 func BenchmarkAVLInsert10e5(b *testing.B) { genAVL(10e5) }
 
 var at = genAVL(10e5)
+
 func BenchmarkAVLSearch(b *testing.B) { at.Search(rand.Int()) }
 func BenchmarkAVLDelete(b *testing.B) { at.Delete(rand.Int()) }
