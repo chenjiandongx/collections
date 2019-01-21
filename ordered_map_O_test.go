@@ -67,5 +67,3 @@ func BenchmarkMap10e5(b *testing.B)   { benchmark(genMap(10e5), b) }
 func BenchmarkSlice10e5(b *testing.B) { benchmark(genSlice(10e5), b) }
 func BenchmarkMap10e6(b *testing.B)   { benchmark(genMap(10e6), b) }
 func BenchmarkSlice10e6(b *testing.B) { benchmark(genSlice(10e6), b) }
-func BenchmarkMap10e7(b *testing.B)   { benchmark(genMap(10e7), b) }
-func BenchmarkSlice10e7(b *testing.B) { benchmark(genSlice(10e7), b) }

@@ -1,13 +1,14 @@
 package collections
 
 import (
-	"github.com/stretchr/testify/assert"
 	"math/rand"
 	"sort"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
-var maxCnt int = 10e6
+var maxCnt int = 10e4
 
 func yieldRandomArray(cnt int) []int {
 	res := make([]int, cnt)
@@ -24,6 +25,22 @@ func assertSort(items []int) bool {
 		}
 	}
 	return true
+}
+
+type StdItems struct {
+	data []int
+}
+
+func (o StdItems) Less(i, j int) bool {
+	return o.data[i] < o.data[j]
+}
+
+func (o StdItems) Swap(i, j int) {
+	o.data[i], o.data[j] = o.data[j], o.data[i]
+}
+
+func (o StdItems) Len() int {
+	return len(o.data)
 }
 
 func TestBubbleSort(t *testing.T) {
@@ -52,31 +69,15 @@ func BenchmarkInsertSort(b *testing.B) {
 	}
 }
 
-type ITEMS struct {
-	data []int
-}
-
-func (o ITEMS) Less(i, j int) bool {
-	return o.data[i] < o.data[j]
-}
-
-func (o ITEMS) Swap(i, j int) {
-	o.data[i], o.data[j] = o.data[j], o.data[i]
-}
-
-func (o ITEMS) Len() int {
-	return len(o.data)
-}
-
 func TestStdSort(t *testing.T) {
-	items := ITEMS{yieldRandomArray(maxCnt)}
+	items := StdItems{yieldRandomArray(maxCnt)}
 	sort.Sort(items)
 	assert.True(t, assertSort(items.data))
 }
 
 func BenchmarkStdSort(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		sort.Sort(ITEMS{yieldRandomArray(maxCnt)})
+		sort.Sort(StdItems{yieldRandomArray(maxCnt)})
 	}
 }
 
