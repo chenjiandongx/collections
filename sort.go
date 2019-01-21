@@ -18,6 +18,7 @@ func BubbleSort(items []int) {
 				// 表示 i 后面的数都已经排序好了
 				// 如 3 2 4 5 6 7 8 9，在 3 和 2 交换之后 无需和后面进行交换
 				// 就代表着 3 之后的数都是有序的，那后面的数就不用排了
+				// 如果数组是基本有序的情况 性能会好很多
 				index = i
 			}
 		}
@@ -72,6 +73,7 @@ func quickSort(items []int, l, r int) {
 		i, j := l, r
 		// 轴点 用于划分左右两部分
 		pivot := items[i]
+		// 左右相遇 完成一次划分排序操作
 		for i < j {
 			// 从右往左找 找到第一个小于 轴点 的数
 			for i < j && items[j] >= pivot {
@@ -216,8 +218,8 @@ func mergeArray(items []int, first, mid, last int, res []int) {
 
 	var k int
 
-	// 左半部分 first, mid
-	// 右半部分 mid+1  last
+	// 左半部分 first mid
+	// 右半部分 mid+1 last
 	for i <= leftLen && j <= rightLen {
 		// 如果左边的值大 则将左边的值放入到 res 中
 		if items[i] <= items[j] {

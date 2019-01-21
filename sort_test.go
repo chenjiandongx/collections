@@ -107,6 +107,19 @@ func BenchmarkShellSort(b *testing.B) {
 	}
 }
 
+func TestHeapSort(t *testing.T) {
+	items := yieldRandomArray(maxCnt)
+	HeapSort(items)
+	assert.True(t, assertSort(items))
+}
+
+func BenchmarkHeapSort(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		items := yieldRandomArray(maxCnt)
+		HeapSort(items)
+	}
+}
+
 func TestMergeSort(t *testing.T) {
 	items := yieldRandomArray(maxCnt)
 	MergeSort(items)

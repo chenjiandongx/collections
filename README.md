@@ -11,6 +11,7 @@
 * [Deque - 双端队列](#Deque)
 * [OrderedMap - 有序 Map](#OrderedMap)
 * [Counter - 计数器](#Counter)
+* [Sort - 排序](#Sort)
 
 ### 🔰 安装&引用
 ```bash
@@ -259,6 +260,18 @@ fmt.Println(c.Top(2))
 fmt.Println(c.Len())
 fmt.Println(c.All())
 c.Delete("a")
+```
+
+### Sort
+
+📝 方法集
+```shell
+BubbleSort()    // 冒泡排序
+InsertSort()    // 插入排序
+QuickSort()     // 快速排序
+ShellSort()     // 希尔排序
+HeapSort()      // 堆排序
+MergeSort()     // 归并排序
 ```
 
 ### 📃 License
