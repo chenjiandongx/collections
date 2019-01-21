@@ -186,7 +186,6 @@ func adjustHeap(items []int, start, end int) {
 	}
 }
 
-
 // 归并排序：稳定
 // 平均 O(nlogn) 最好 O(nlogn) 最差 O(nlogn)
 // https://upload.wikimedia.org/wikipedia/commons/c/c5/Merge_sort_animation2.gif
