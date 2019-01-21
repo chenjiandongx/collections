@@ -11,6 +11,7 @@
 * [Deque - 双端队列](#Deque)
 * [OrderedMap - 有序 Map](#OrderedMap)
 * [Counter - 计数器](#Counter)
+* [AVLTree - AVL 树](#AVLTree)
 * [Sort - 排序](#Sort)
 
 ### 🔰 安装&引用
@@ -262,6 +263,25 @@ fmt.Println(c.All())
 c.Delete("a")
 ```
 
+### AVLTree
+
+📝 方法集
+```shell
+NewAVLTree() *AVLTree
+Insert(v int)
+Search(v int) bool
+Delete(v int) bool
+GetMaxValue() int
+GetMinValue() int
+AllValues() []int
+```
+
+✏️ 示例
+```go
+```
+
+📣 讨论
+
 ### Sort
 
 📝 方法集
@@ -273,6 +293,12 @@ ShellSort()     // 希尔排序
 HeapSort()      // 堆排序
 MergeSort()     // 归并排序
 ```
+
+✏️ 示例
+```go
+```
+
+📣 讨论
 
 ### 📃 License
 MIT [©chenjiandongx](http://github.com/chenjiandongx)
