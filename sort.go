@@ -28,7 +28,7 @@ func BubbleSort(items []int) {
 // 直接插入排序：稳定
 // 平均 O(n^2) 最好 O(n) 最差 O(n^2)
 // https://upload.wikimedia.org/wikipedia/commons/2/25/Insertion_sort_animation.gif
-func InsertSort(items []int) {
+func InsertionSort(items []int) {
 	length := len(items)
 	if length < 2 {
 		return

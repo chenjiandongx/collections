@@ -264,30 +264,84 @@ c.Delete("a")
 ```
 
 ### AVLTree
+> AVL 二叉自平衡查找树
 
 📝 方法集
 ```shell
-NewAVLTree() *AVLTree
-Insert(v int)
-Search(v int) bool
-Delete(v int) bool
-GetMaxValue() int
-GetMinValue() int
-AllValues() []int
+NewAVLTree() *AVLTree       // 生成 AVL 树
+Insert(v int)               // 插入节点
+Search(v int) bool          // 搜索节点
+Delete(v int) bool          // 删除节点
+GetMaxValue() int           // 获取所有节点中的最大值
+GetMinValue() int           // 获取所有节点中的最小值
+AllValues() []int           // 返回排序后所有值
 ```
 
 ✏️ 示例
 ```go
+var maxNum = 100
+
+tree := NewAVLTree()
+for i := 0; i < maxNum; i++ {
+    tree.Insert(i)
+    tree.Insert(maxNum + i)
+}
+fmt.Println(len(tree.AllValues()))
+fmt.Println(tree.GetMaxValue())
+fmt.Println(tree.GetMinValue())
+fmt.Println(tree.Search(50))
+fmt.Println(tree.Search(100))
+fmt.Println(tree.Search(-10))
+fmt.Println(tree.Delete(-10))
+fmt.Println(tree.Delete(10))
 ```
 
 📣 讨论
+
+AVL 树是自平衡树的一种，其通过左旋和右旋来调整自身的平衡性，使其左右子树的高度差最大不超过 1。AVL 在插入、查找、删除的平时时间复杂度都是 O(logn)，在基本的 BST（二叉查找树）中，理想情况的效率也是为 O(logn)，但由于操作的性能其实是依赖于树的高度，而 BST 最坏的情况会导致树退化成链表，此时时间复杂度就变为 O(n)，为了解决这个问题，自平衡二叉树应运而生。
+
+AVL 的主要精髓在于`旋转`，旋转分为 4 种情况，左旋，左旋+右旋，右旋，右旋+左旋。调整树结构后需要重新计算树高。
+
+**左子树左节点失衡**
+> 左左情况 直接右旋
+```shell
+    x                
+  x        => 右旋         x
+x                       x    x
+```
+
+**左子树右节点失衡**
+> 左右情况 先左旋后右旋
+```shell
+  x                        x     
+x         => 左旋         x       => 右旋        x
+  x                     x                     x    x
+```
+
+**右子树右节点失衡**
+> 右右情况 直接左旋
+```shell
+x                
+  x       => 左旋          x
+    x                   x    x
+```
+
+**右子树左节点失衡**
+> 右左情况 先右旋后左旋
+```shell
+x                      x     
+  x       => 右旋        x       => 左旋        x
+x                          x                 x    x
+```
+
+AVL 主要的性能消耗主要在插入，因为其需要通过旋转来维护树的平衡，但如果使用场景是经常需要排序和查找数据的话，AVL 还是可以展现其良好的性能的。
 
 ### Sort
 
 📝 方法集
 ```shell
 BubbleSort()    // 冒泡排序
-InsertSort()    // 插入排序
+InsertionSort()    // 插入排序
 QuickSort()     // 快速排序
 ShellSort()     // 希尔排序
 HeapSort()      // 堆排序
@@ -296,9 +350,106 @@ MergeSort()     // 归并排序
 
 ✏️ 示例
 ```go
+var maxCnt = 10e4
+
+func yieldRandomArray() []int {
+    res := make([]int, maxCnt)
+    for i := 0; i < maxCnt; i++ {
+        res[i] = rand.Int()
+    }
+    return res
+}
+
+BubbleSort(yieldRandomArray())
+InsertionSort(yieldRandomArray())
+QuickSort(yieldRandomArray())
+ShellSort(yieldRandomArray())
+HeapSort(yieldRandomArray())
+MergeSort(yieldRandomArray())
 ```
 
 📣 讨论
+
+**排序算法时间复杂度比较**
+
+| 排序算法 |  是否稳定  |  平均    |   最好  |    最差   |   动画演示  |
+| -------- | --------- |----------| --------| -------- | ----------- |
+| BubbleSort | 是 | O(n^2) |  O(n) |  O(n^2) | ![](https://upload.wikimedia.org/wikipedia/commons/3/37/Bubble_sort_animation.gif) |
+| InsertionSort | 是 | O(n^2) |  O(n) |  O(n^2) | ![](https://upload.wikimedia.org/wikipedia/commons/2/25/Insertion_sort_animation.gif) |
+| QuickSort | 否 | O(nlogn) | O(nlogn) |  O(n^2) | ![](https://upload.wikimedia.org/wikipedia/commons/6/6a/Sorting_quicksort_anim.gif) |
+| ShellSort | 否 |O(nlogn) |  O(n) | O(n^2)  | ![](https://upload.wikimedia.org/wikipedia/commons/2/25/Insertion_sort_animation.gif) |
+| HeapSort | 否 | O(nlogn) |  O(nlogn) | O(nlogn) | ![](https://upload.wikimedia.org/wikipedia/commons/1/1b/Sorting_heapsort_anim.gif) |
+| MergeSort | 是 | O(nlogn) |  O(nlogn) | O(nlogn) | ![](https://upload.wikimedia.org/wikipedia/commons/c/c5/Merge_sort_animation2.gif) |
+
+具体运行时间如何呢，可以通过 benchmark 来测试一下
+```go
+// 生成指定长度的随机整数数组
+var maxCnt int = 10e4
+
+func yieldRandomArray(cnt int) []int {
+    res := make([]int, cnt)
+    for i := 0; i < cnt; i++ {
+        res[i] = rand.Int()
+    }
+    return res
+}
+```
+
+运行结果
+```shell
+BenchmarkBubbleSort-8                  1        17361549400 ns/op
+BenchmarkInsertionSort-8               1        1934826900 ns/op
+BenchmarkQuickSort-8                 100          10651807 ns/op
+BenchmarkShellSort-8                 100          16476199 ns/op
+BenchmarkHeapSort-8                  100          14231607 ns/op
+BenchmarkMergeSort-8                 100          14840583 ns/op
+```
+
+换两种极端的数据分布方式
+```go
+// 升序
+func yieldArrayAsce(cnt int) []int {
+    res := make([]int, cnt)
+    for i := 0; i < cnt; i++ {
+        res[i] = i
+    }
+    return res
+}
+```
+
+运行结果
+```shell
+BenchmarkBubbleSort-8               5000            266690 ns/op
+BenchmarkInsertionSort-8           10000            213429 ns/op
+BenchmarkStdSort-8                   200           6901535 ns/op
+BenchmarkQuickSort-8                   1        3291222900 ns/op
+BenchmarkShellSort-8                1000           1716406 ns/op
+BenchmarkHeapSort-8                  200           6806788 ns/op
+BenchmarkMergeSort-8                 300           4677485 ns/op
+```
+
+```go
+// 降序
+func yieldArrayDesc(cnt int) []int {
+    res := make([]int, cnt)
+    for i := 0; i < cnt; i++ {
+        res[i] = cnt-i
+    }
+    return res
+}
+```
+
+运行结果
+```shell
+BenchmarkBubbleSort-8                  1        6710048800 ns/op
+BenchmarkInsertionSort-8               1        3881599100 ns/op
+BenchmarkQuickSort-8                   1        3373971200 ns/op
+BenchmarkShellSort-8                 500           2876371 ns/op
+BenchmarkHeapSort-8                  200           7081150 ns/op
+BenchmarkMergeSort-8                 300           4448222 ns/op
+```
+
+// TODO: 睡觉先
 
 ### 📃 License
 MIT [©chenjiandongx](http://github.com/chenjiandongx)

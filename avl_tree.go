@@ -11,18 +11,22 @@ type AVLTree struct {
 	tree *avlNode
 }
 
+// 生成 AVL 树
 func NewAVLTree() *AVLTree {
 	return &AVLTree{&avlNode{h: -2}}
 }
 
+// 插入节点
 func (a *AVLTree) Insert(v int) {
 	a.tree = insert(v, a.tree)
 }
 
+// 搜索节点
 func (a *AVLTree) Search(v int) bool {
 	return a.tree.search(v)
 }
 
+// 删除节点
 func (a *AVLTree) Delete(v int) bool {
 	if a.tree.search(v) {
 		a.tree.delete(v)
@@ -31,14 +35,17 @@ func (a *AVLTree) Delete(v int) bool {
 	return false
 }
 
+// 获取所有节点中的最大值
 func (a *AVLTree) GetMaxValue() int {
 	return a.tree.maxNode().value
 }
 
+// 获取所有节点中的最小值
 func (a *AVLTree) GetMinValue() int {
 	return a.tree.minNode().value
 }
 
+// 返回排序后所有值
 func (a *AVLTree) AllValues() []int {
 	return a.tree.values()
 }
@@ -182,7 +189,7 @@ func (t *avlNode) rrRotate() *avlNode {
 }
 
 /*
-左右情况：先右旋 后左旋
+左右情况：先左旋 后右旋
 		*
 	   *
 	    *
@@ -193,7 +200,7 @@ func (t *avlNode) lrRotate() *avlNode {
 }
 
 /*
-右左情况：先左旋 后右旋
+右左情况：先右旋 后左旋
 		*
 	     *
         *

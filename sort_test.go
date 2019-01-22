@@ -56,16 +56,16 @@ func BenchmarkBubbleSort(b *testing.B) {
 	}
 }
 
-func TestInsertSort(t *testing.T) {
+func TestInsertionSort(t *testing.T) {
 	items := yieldRandomArray(maxCnt)
-	InsertSort(items)
+	InsertionSort(items)
 	assert.True(t, assertSort(items))
 }
 
-func BenchmarkInsertSort(b *testing.B) {
+func BenchmarkInsertionSort(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		items := yieldRandomArray(maxCnt)
-		InsertSort(items)
+		InsertionSort(items)
 	}
 }
 
