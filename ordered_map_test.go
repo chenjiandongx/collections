@@ -2,7 +2,7 @@ package collections
 
 import (
 	"testing"
-	
+
 	"github.com/cevaris/ordered_map"
 )
 
