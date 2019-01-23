@@ -393,8 +393,9 @@ MergeSort(yieldRandomArray())
 | MergeSort | 是 | O(nlogn) |  O(nlogn) | O(nlogn) | ![](https://upload.wikimedia.org/wikipedia/commons/c/c5/Merge_sort_animation2.gif) |
 
 通过 benchmark 来测试平均排序性能
+
+**数据随机分布**
 ```go
-// 生成指定长度的随机整数数组
 var maxCnt int = 10e4
 
 func yieldRandomArray(cnt int) []int {
@@ -420,7 +421,7 @@ BenchmarkMergeSort-8                 100          14840583 ns/op
 
 **换两种极端的数据分布方式**
 
-数据为升序分布
+**数据升序分布**
 ```go
 func yieldArrayAsce(cnt int) []int {
     res := make([]int, cnt)
@@ -443,7 +444,7 @@ BenchmarkMergeSort-8                 300           4677485 ns/op
 
 在数据基本升序的情况下，冒泡和直接插入排序能够取得良好的性能。而快排就给跪了，就是最差的 O(n^2) 了。
 
-数据为降序分布
+**数据降序分布**
 ```go
 func yieldArrayDesc(cnt int) []int {
     res := make([]int, cnt)
@@ -464,7 +465,7 @@ BenchmarkHeapSort-8                  200           7081150 ns/op
 BenchmarkMergeSort-8                 300           4448222 ns/op
 ```
 
-在数据基本降序的情况下，冒泡和直接插入排序一如既往的差，快排也又跪了，又是 O(n^2)...
+在数据基本降序的情况下，冒泡和直接插入排序一如既往的差，快排又给跪了，又是 O(n^2)...
 
 那自己写的排序和 Golang 官方提供的 sort.Sort 排序方法对比，效率如何呢
 
@@ -492,7 +493,7 @@ func (o StdItems) Len() int {
 
 只取 n(logn) 复杂度的排序算法与标准 sort 进行对比
 
-数据随机分布
+**数据随机分布**
 ```shell
 BenchmarkStdSort-6                   100          22561304 ns/op
 BenchmarkQuickSort-6                 200           8809502 ns/op
@@ -503,7 +504,7 @@ BenchmarkMergeSort-6                 100          12379869 ns/op
 
 是不是眼前一亮 😂，自己写的快排居然这么厉害，比标准的 sort 快了不止两倍？？？ 这里出现这样的情况的主要原因是 sort 实现了 sort.Interface，该接口需要有三个方法 Less()/Len()/Swap()，而接口的类型转换是有成本的。**通用**意味着**牺牲**，这是**专**和**精**权衡后的结果。当然，标准的 sort 大部分情况的性能都是可以接受的，也是比较方便的。但当你需要追求极致性能的话，自己针对特定需求实现排序算法肯定会是更好的选择。
 
-数据升序分布
+**数据升序分布**
 ```shell
 BenchmarkStdSort-6                   200           9412444 ns/op
 BenchmarkQuickSort-6                   1        2697328000 ns/op
@@ -512,9 +513,9 @@ BenchmarkHeapSort-6                  300           5841314 ns/op
 BenchmarkMergeSort-6                 500           3756284 ns/op
 ```
 
-是不是又是眼前一亮 🤣，我去为什么这次标准的排序比快排快了这么多，官方的排序不也是快排吗？（好像也没人会比快排慢是吧 😅）
+是不是又是眼前一亮 🤣，我去 为什么这次标准的排序比快排快了这么多，官方的排序不也是快排吗？（好像也没人会比快排慢是吧 😅）
 
-数据降序分布
+**数据降序分布**
 ```shell
 BenchmarkStdSort-6                   200           9548365 ns/op
 BenchmarkQuickSort-6                   1        2678204600 ns/op
@@ -529,21 +530,21 @@ emmmmmmm，同上 😓
 
 最后，按官方的排序针对自己想要的数据类型排序 不使用接口那套 会是什么效率呢 对比上面排序中最快的算法以及接口实现的 sort
 
-数据随机分布
+**数据随机分布**
 ```shell
 BenchmarkStdSort-6                   100          22680519 ns/op
 BenchmarkQuickSort-6                 200           9022003 ns/op
 BenchmarkSort-6                      200           8754770 ns/op
 ```
 
-数据升序分布
+**数据升序分布**
 ```shell
 BenchmarkStdSort-6                   200           9312165 ns/op
 BenchmarkShellSort-6                1000           1323258 ns/op
 BenchmarkSort-6                     1000           1273628 ns/op
 ```
 
-数据降序分布
+**数据降序分布**
 ```shell
 BenchmarkStdSort-6                   200           9540368 ns/op
 BenchmarkShellSort-6                1000           2286450 ns/op
