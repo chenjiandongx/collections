@@ -502,7 +502,7 @@ BenchmarkHeapSort-8                          100          14501199 ns/op
 BenchmarkMergeSort-8                         100          13793086 ns/op
 ```
 
-是不是眼前一亮 😂，自己写的快排居然这么厉害，比标准的 sort 快了不止两倍？？？ 这里出现这样的情况的主要原因是 sort 实现了 sort.Interface，该接口需要有三个方法 Less()/Len()/Swap()，而接口的类型转换是有成本的。**通用**意味着**牺牲**，这是**专**和**精**权衡后的结果。当然，标准的 sort 大部分情况的性能都是可以接受的，也是比较方便的。但当你需要追求极致性能的话，自己针对特定需求实现排序算法肯定会是更好的选择。
+是不是眼前一亮 😂，自己写的快排居然这么厉害，比标准的 sort 快了不止两倍？？？ 这里出现这样的情况的主要原因是 sort 实现了 sort.Interface，该接口需要有三个方法 Less()/Len()/Swap()，而接口的类型转换是有成本的。**通用意味着兼容，兼容以为着妥协，这是专和精权衡后的结果**。当然，标准的 sort 大部分情况的性能都是可以接受的，也是比较方便的。但当你需要追求极致性能的话，自己针对特定需求实现排序算法肯定会是更好的选择。
 
 **数据升序分布**
 ```shell
@@ -551,7 +551,7 @@ BenchmarkShellSort-8                         500           3051834 ns/op
 BenchmarkStdSortWithoutInterface-8          1000           1689479 ns/op
 ```
 
-🖖 [Sort](https://github.com/chenjiandongx/collections/blob/master/std_sort.go) 完胜！！！
+🖖 [StdSortWithoutInterface](https://github.com/chenjiandongx/collections/blob/master/std_sort.go) 完胜！！！
 
 故事到这里还没有结束，我们还可以进一步思考如何获得更高的排序性能，没错，就是 goroutine，将一个数据切分成两半，分别使用 `StdSortWithoutInterface` 排序，将排序后的结果进行一次归并排序，就可以得到最终的有序数组，这次我们测试的数组长度为 **10e5**
 
@@ -568,7 +568,7 @@ BenchmarkStdSortWithGoroutine-2               20          80835825 ns/op
 BenchmarkStdSortWithGoroutine-8               20          81232625 ns/op
 ```
 
-😎 WOW!!! cpu 数量为 1 时大家相差无几，cpu > 1 以后，goroutine 做到了真正的并行，利用多核进行计算，速度提升了 **1.5** 倍，比默认的 Sort 方法提升了 **4** 倍。诺，这就是算法的魅力。
+😎 WOW!!! cpu 数量为 1 时大家相差无几，cpu > 1 以后，goroutine 做到了真正的并行，利用多核进行计算，速度提升了 **1.5** 倍，比默认的 Sort 方法提升了 **4** 倍。喏，这就是算法的魅力。
 
 ### 📃 License
 MIT [©chenjiandongx](http://github.com/chenjiandongx)
