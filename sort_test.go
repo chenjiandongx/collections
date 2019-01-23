@@ -133,15 +133,28 @@ func BenchmarkMergeSort(b *testing.B) {
 	}
 }
 
-func TestSort(t *testing.T) {
+func TestStdSortWithoutInterface(t *testing.T) {
 	items := yieldRandomArray(maxCnt)
-	Sort(items)
+	StdSortWithoutInterface(items)
 	assert.True(t, assertSort(items))
 }
 
-func BenchmarkSort(b *testing.B) {
+func BenchmarkStdSortWithoutInterface(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		items := yieldRandomArray(maxCnt)
-		Sort(items)
+		StdSortWithoutInterface(items)
+	}
+}
+
+func TestStdSortWithGoroutine(t *testing.T) {
+	items := yieldRandomArray(maxCnt)
+	StdSortWithGoroutine(items)
+	assert.True(t, assertSort(items))
+}
+
+func BenchmarkStdSortWithGoroutine(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		items := yieldRandomArray(maxCnt)
+		StdSortWithGoroutine(items)
 	}
 }

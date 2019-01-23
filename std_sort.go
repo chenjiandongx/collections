@@ -194,9 +194,17 @@ func qSort(data []int, a, b, maxDepth int) {
 // Sort sorts data.
 // It makes one call to data.Len to determine n, and O(n*log(n)) calls to
 // data.Less and data.Swap. The sort is not guaranteed to be stable.
-func Sort(data []int) {
+func stdSort(data []int, start, end int, ch chan bool) {
 	n := len(data)
-	qSort(data, 0, n, maxDepth(n))
+	mid := n / 2
+	qSort(data, start, end, maxDepth(mid))
+	ch <- true
+}
+
+func StdSortWithoutInterface(data []int) {
+	n := len(data)
+	mid := n / 2
+	qSort(data, 0, n, maxDepth(mid))
 }
 
 func maxDepth(n int) int {
@@ -205,4 +213,20 @@ func maxDepth(n int) int {
 		depth++
 	}
 	return depth * 2
+}
+
+func StdSortWithGoroutine(data []int) {
+	n := len(data)
+	mid := n / 2
+
+	chs := make(chan bool, 2)
+
+	go stdSort(data, 0, mid, chs)
+	go stdSort(data, mid, n, chs)
+
+	for i := 0; i < 2; i++ {
+		<-chs
+	}
+	res := make([]int, n)
+	mergeArray(data, 0, mid-1, n-1, res)
 }

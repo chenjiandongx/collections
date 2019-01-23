@@ -495,33 +495,33 @@ func (o StdItems) Len() int {
 
 **数据随机分布**
 ```shell
-BenchmarkStdSort-6                   100          22561304 ns/op
-BenchmarkQuickSort-6                 200           8809502 ns/op
-BenchmarkShellSort-6                 100          13712372 ns/op
-BenchmarkHeapSort-6                  100          12027323 ns/op
-BenchmarkMergeSort-6                 100          12379869 ns/op
+BenchmarkStdSort-8                            50          22978524 ns/op
+BenchmarkQuickSort-8                         100          11648689 ns/op
+BenchmarkShellSort-8                         100          17353544 ns/op
+BenchmarkHeapSort-8                          100          14501199 ns/op
+BenchmarkMergeSort-8                         100          13793086 ns/op
 ```
 
 是不是眼前一亮 😂，自己写的快排居然这么厉害，比标准的 sort 快了不止两倍？？？ 这里出现这样的情况的主要原因是 sort 实现了 sort.Interface，该接口需要有三个方法 Less()/Len()/Swap()，而接口的类型转换是有成本的。**通用**意味着**牺牲**，这是**专**和**精**权衡后的结果。当然，标准的 sort 大部分情况的性能都是可以接受的，也是比较方便的。但当你需要追求极致性能的话，自己针对特定需求实现排序算法肯定会是更好的选择。
 
 **数据升序分布**
 ```shell
-BenchmarkStdSort-6                   200           9412444 ns/op
-BenchmarkQuickSort-6                   1        2697328000 ns/op
-BenchmarkShellSort-6                1000           1442077 ns/op
-BenchmarkHeapSort-6                  300           5841314 ns/op
-BenchmarkMergeSort-6                 500           3756284 ns/op
+BenchmarkStdSort-8                           200           7285511 ns/op
+BenchmarkQuickSort-8                           1        3351046900 ns/op
+BenchmarkShellSort-8                        1000           1679506 ns/op
+BenchmarkHeapSort-8                          200           6632256 ns/op
+BenchmarkMergeSort-8                         300           4308582 ns/op
 ```
 
-是不是又是眼前一亮 🤣，我去 为什么这次标准的排序比快排快了这么多，官方的排序不也是快排吗？（好像也没人会比快排慢是吧 😅）
+是不是又是眼前一亮 🤣，我去 为什么这次标准的排序比快排快了这么多，官方的排序不也是快排吗？（这个测试结果看起来好像也没人会比快排慢是吧 😅）
 
 **数据降序分布**
 ```shell
-BenchmarkStdSort-6                   200           9548365 ns/op
-BenchmarkQuickSort-6                   1        2678204600 ns/op
-BenchmarkShellSort-6                 500           2417678 ns/op
-BenchmarkHeapSort-6                  300           5858391 ns/op
-BenchmarkMergeSort-6                 500           3865994 ns/op
+BenchmarkStdSort-8                           200           7405331 ns/op
+BenchmarkQuickSort-8                           1        3390954400 ns/op
+BenchmarkShellSort-8                         500           2900240 ns/op
+BenchmarkHeapSort-8                          200           7091124 ns/op
+BenchmarkMergeSort-8                         300           4295169 ns/op
 ```
 
 emmmmmmm，同上 😓
@@ -532,26 +532,43 @@ emmmmmmm，同上 😓
 
 **数据随机分布**
 ```shell
-BenchmarkStdSort-6                   100          22680519 ns/op
-BenchmarkQuickSort-6                 200           9022003 ns/op
-BenchmarkSort-6                      200           8754770 ns/op
+BenchmarkStdSort-8                           100          22649399 ns/op
+BenchmarkQuickSort-8                         100          10870924 ns/op
+BenchmarkStdSortWithoutInterface-8           100          10511605 ns/op
 ```
 
 **数据升序分布**
 ```shell
-BenchmarkStdSort-6                   200           9312165 ns/op
-BenchmarkShellSort-6                1000           1323258 ns/op
-BenchmarkSort-6                     1000           1273628 ns/op
+BenchmarkStdSort-8                           200           7006117 ns/op
+BenchmarkShellSort-8                        1000           1667537 ns/op
+BenchmarkStdSortWithoutInterface-8          1000           1619643 ns/op
 ```
 
 **数据降序分布**
 ```shell
-BenchmarkStdSort-6                   200           9540368 ns/op
-BenchmarkShellSort-6                1000           2286450 ns/op
-BenchmarkSort-6                     1000           1288236 ns/op
+BenchmarkStdSort-8                           200           7614625 ns/op
+BenchmarkShellSort-8                         500           3051834 ns/op
+BenchmarkStdSortWithoutInterface-8          1000           1689479 ns/op
 ```
 
 🖖 [Sort](https://github.com/chenjiandongx/collections/blob/master/std_sort.go) 完胜！！！
+
+故事到这里还没有结束，我们还可以进一步思考如何获得更高的排序性能，没错，就是 goroutine，将一个数据切分成两半，分别使用 `StdSortWithoutInterface` 排序，将排序后的结果进行一次归并排序，就可以得到最终的有序数组，这次我们测试的数组长度为 **10e5**
+
+为了验证真正的`并行计算` 我们将分别测试 cpu 数量为 1, 2, 8 的情况
+```shell
+BenchmarkStdSort                               5         260696480 ns/op
+BenchmarkStdSort-2                             5         246746560 ns/op
+BenchmarkStdSort-8                             5         248532560 ns/op
+BenchmarkStdSortWithoutInterface              10         124666470 ns/op
+BenchmarkStdSortWithoutInterface-2            10         120676740 ns/op
+BenchmarkStdSortWithoutInterface-8            10         126062650 ns/op
+BenchmarkStdSortWithGoroutine                 20         125163280 ns/op
+BenchmarkStdSortWithGoroutine-2               20          80835825 ns/op
+BenchmarkStdSortWithGoroutine-8               20          81232625 ns/op
+```
+
+😎 WOW!!! cpu 数量为 1 时大家相差无几，cpu > 1 以后，goroutine 做到了真正的并行，利用多核进行计算，速度提升了 **1.5** 倍，比默认的 Sort 方法提升了 **4** 倍。诺，这就是算法的魅力。
 
 ### 📃 License
 MIT [©chenjiandongx](http://github.com/chenjiandongx)
