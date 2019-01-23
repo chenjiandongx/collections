@@ -30,7 +30,7 @@ func siftDown(data []int, lo, hi, first int) {
 		if child+1 < hi && data[first+child] < data[first+child+1] {
 			child++
 		}
-		if !(data[first+root] < data [first+child]) {
+		if !(data[first+root] < data[first+child]) {
 			return
 		}
 		data[first+root], data[first+child] = data[first+child], data[first+root]
