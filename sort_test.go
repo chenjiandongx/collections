@@ -132,3 +132,16 @@ func BenchmarkMergeSort(b *testing.B) {
 		MergeSort(items)
 	}
 }
+
+func TestSort(t *testing.T) {
+	items := yieldRandomArray(maxCnt)
+	Sort(items)
+	assert.True(t, assertSort(items))
+}
+
+func BenchmarkSort(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		items := yieldRandomArray(maxCnt)
+		Sort(items)
+	}
+}

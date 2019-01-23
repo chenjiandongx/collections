@@ -336,16 +336,27 @@ x                          x                 x    x
 
 AVL 主要的性能消耗主要在插入，因为其需要通过旋转来维护树的平衡，但如果使用场景是经常需要排序和查找数据的话，AVL 还是可以展现其良好的性能的。
 
+**benchmark**
+```
+BenchmarkAVLInsert10e1-6        2000000000               0.00 ns/op
+BenchmarkAVLInsert10e2-6        2000000000               0.00 ns/op
+BenchmarkAVLInsert10e3-6        2000000000               0.00 ns/op
+BenchmarkAVLInsert10e4-6        2000000000               0.02 ns/op
+BenchmarkAVLInsert10e5-6        1000000000               0.82 ns/op
+BenchmarkAVLSearch-6            2000000000               0.00 ns/op
+BenchmarkAVLDelete-6            2000000000               0.00 ns/op
+```
+
 ### Sort
 
 📝 方法集
 ```shell
-BubbleSort()    // 冒泡排序
-InsertionSort()    // 插入排序
-QuickSort()     // 快速排序
-ShellSort()     // 希尔排序
-HeapSort()      // 堆排序
-MergeSort()     // 归并排序
+BubbleSort()        // 冒泡排序
+InsertionSort()     // 插入排序
+QuickSort()         // 快速排序
+ShellSort()         // 希尔排序
+HeapSort()          // 堆排序
+MergeSort()         // 归并排序
 ```
 
 ✏️ 示例
@@ -381,7 +392,7 @@ MergeSort(yieldRandomArray())
 | HeapSort | 否 | O(nlogn) |  O(nlogn) | O(nlogn) | ![](https://upload.wikimedia.org/wikipedia/commons/1/1b/Sorting_heapsort_anim.gif) |
 | MergeSort | 是 | O(nlogn) |  O(nlogn) | O(nlogn) | ![](https://upload.wikimedia.org/wikipedia/commons/c/c5/Merge_sort_animation2.gif) |
 
-具体运行时间如何呢，可以通过 benchmark 来测试一下
+通过 benchmark 来测试平均排序性能
 ```go
 // 生成指定长度的随机整数数组
 var maxCnt int = 10e4
@@ -405,9 +416,12 @@ BenchmarkHeapSort-8                  100          14231607 ns/op
 BenchmarkMergeSort-8                 100          14840583 ns/op
 ```
 
-换两种极端的数据分布方式
+冒泡和直接插入排序在随机数据集的排序性能最差，为 O(n^2)，剩余 4 种排序快排效率最佳，其他 3 者性能很接近。
+
+**换两种极端的数据分布方式**
+
+数据为升序分布
 ```go
-// 升序
 func yieldArrayAsce(cnt int) []int {
     res := make([]int, cnt)
     for i := 0; i < cnt; i++ {
@@ -421,15 +435,16 @@ func yieldArrayAsce(cnt int) []int {
 ```shell
 BenchmarkBubbleSort-8               5000            266690 ns/op
 BenchmarkInsertionSort-8           10000            213429 ns/op
-BenchmarkStdSort-8                   200           6901535 ns/op
 BenchmarkQuickSort-8                   1        3291222900 ns/op
 BenchmarkShellSort-8                1000           1716406 ns/op
 BenchmarkHeapSort-8                  200           6806788 ns/op
 BenchmarkMergeSort-8                 300           4677485 ns/op
 ```
 
+在数据基本升序的情况下，冒泡和直接插入排序能够取得良好的性能。而快排就给跪了，就是最差的 O(n^2) 了。
+
+数据为降序分布
 ```go
-// 降序
 func yieldArrayDesc(cnt int) []int {
     res := make([]int, cnt)
     for i := 0; i < cnt; i++ {
@@ -449,7 +464,93 @@ BenchmarkHeapSort-8                  200           7081150 ns/op
 BenchmarkMergeSort-8                 300           4448222 ns/op
 ```
 
-// TODO: 睡觉先
+在数据基本降序的情况下，冒泡和直接插入排序一如既往的差，快排也又跪了，又是 O(n^2)...
+
+那自己写的排序和 Golang 官方提供的 sort.Sort 排序方法对比，效率如何呢
+
+
+定义一个 struct，实现 sort.Interface
+```go
+import "sort"
+
+type StdItems struct {
+    data []int
+}
+
+func (o StdItems) Less(i, j int) bool {
+    return o.data[i] < o.data[j]
+}
+
+func (o StdItems) Swap(i, j int) {
+    o.data[i], o.data[j] = o.data[j], o.data[i]
+}
+
+func (o StdItems) Len() int {
+    return len(o.data)
+}
+```
+
+只取 n(logn) 复杂度的排序算法与标准 sort 进行对比
+
+数据随机分布
+```shell
+BenchmarkStdSort-6                   100          22561304 ns/op
+BenchmarkQuickSort-6                 200           8809502 ns/op
+BenchmarkShellSort-6                 100          13712372 ns/op
+BenchmarkHeapSort-6                  100          12027323 ns/op
+BenchmarkMergeSort-6                 100          12379869 ns/op
+```
+
+是不是眼前一亮 😂，自己写的快排居然这么厉害，比标准的 sort 快了不止两倍？？？ 这里出现这样的情况的主要原因是 sort 实现了 sort.Interface，该接口需要有三个方法 Less()/Len()/Swap()，而接口的类型转换是有成本的。**通用**意味着**牺牲**，这是**专**和**精**权衡后的结果。当然，标准的 sort 大部分情况的性能都是可以接受的，也是比较方便的。但当你需要追求极致性能的话，自己针对特定需求实现排序算法肯定会是更好的选择。
+
+数据升序分布
+```shell
+BenchmarkStdSort-6                   200           9412444 ns/op
+BenchmarkQuickSort-6                   1        2697328000 ns/op
+BenchmarkShellSort-6                1000           1442077 ns/op
+BenchmarkHeapSort-6                  300           5841314 ns/op
+BenchmarkMergeSort-6                 500           3756284 ns/op
+```
+
+是不是又是眼前一亮 🤣，我去为什么这次标准的排序比快排快了这么多，官方的排序不也是快排吗？（好像也没人会比快排慢是吧 😅）
+
+数据降序分布
+```shell
+BenchmarkStdSort-6                   200           9548365 ns/op
+BenchmarkQuickSort-6                   1        2678204600 ns/op
+BenchmarkShellSort-6                 500           2417678 ns/op
+BenchmarkHeapSort-6                  300           5858391 ns/op
+BenchmarkMergeSort-6                 500           3865994 ns/op
+```
+
+emmmmmmm，同上 😓
+
+关于官方排序的具体实现，可以参考 [src/sort/sort.go](https://golang.org/src/sort/sort.go)，实际上是直接插入排序，快速排序，堆排序和归并排序的组合排序。[这篇文章](https://github.com/polaris1119/The-Golang-Standard-Library-by-Example/blob/master/chapter03/03.1.md) 对这部分有介绍
+
+最后，按官方的排序针对自己想要的数据类型排序 不使用接口那套 会是什么效率呢 对比上面排序中最快的算法以及接口实现的 sort
+
+数据随机分布
+```shell
+BenchmarkStdSort-6                   100          22680519 ns/op
+BenchmarkQuickSort-6                 200           9022003 ns/op
+BenchmarkSort-6                      200           8754770 ns/op
+```
+
+数据升序分布
+```shell
+BenchmarkStdSort-6                   200           9312165 ns/op
+BenchmarkShellSort-6                1000           1323258 ns/op
+BenchmarkSort-6                     1000           1273628 ns/op
+```
+
+数据降序分布
+```shell
+BenchmarkStdSort-6                   200           9540368 ns/op
+BenchmarkShellSort-6                1000           2286450 ns/op
+BenchmarkSort-6                     1000           1288236 ns/op
+```
+
+🖖 [Sort](https://github.com/chenjiandongx/collections/blob/master/std_sort.go) 完胜！！！
 
 ### 📃 License
 MIT [©chenjiandongx](http://github.com/chenjiandongx)
