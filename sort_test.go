@@ -8,7 +8,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-var maxCnt int = 10e4
+var maxCnt int = 10e3
 
 func yieldRandomArray(cnt int) []int {
 	res := make([]int, cnt)
