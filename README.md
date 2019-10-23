@@ -5,6 +5,7 @@
 [![Build Status](https://travis-ci.org/chenjiandongx/collections.svg?branch=master)](https://travis-ci.org/chenjiandongx/collections) [![Build status](https://ci.appveyor.com/api/projects/status/b0qa418u4j502086?svg=true)](https://ci.appveyor.com/project/chenjiandongx/collections) [![Go Report Card](https://goreportcard.com/badge/github.com/chenjiandongx/collections)](https://goreportcard.com/report/github.com/chenjiandongx/collections) [![License: MIT](https://img.shields.io/badge/License-MIT-brightgreen.svg)](https://opensource.org/licenses/MIT) [![GoDoc](https://godoc.org/github.com/chenjiandongx/collections?status.svg)](https://godoc.org/github.com/chenjiandongx/collections)
 
 ## 📚 目录
+
 * [Queue - 先进先出队列](#Queue)
 * [LifoQueue - 后进先出队列](#LifoQueue)
 * [PriorityQueue - 优先队列](#PriorityQueue)
@@ -15,6 +16,7 @@
 * [Sort - 排序](#Sort)
 
 ### 🔰 安装&引用
+
 ```bash
 $ go get github.com/chenjiandongx/collections
 
@@ -22,6 +24,7 @@ import "github.com/chenjiandongx/collections"
 ```
 
 ### 📦 Collections
+
 ### Queue
 > 先进先出队列（线程安全）
 
@@ -207,15 +210,15 @@ for k, v, ok := om.Iter(); ok; k, v, ok = om.Iter() {
 
 📣 讨论
 
-有序 Map 在 Golang 中应该是一个十分常见的需求，Map 最大的优势就是它的查找性能，**理论上** Map 查找的时间复杂度是常数级的。但实际情况如何，我们可以通过 benchmark 来验证。在 [Go Maps Don’t Appear to be O(1)](https://medium.com/@ConnorPeet/go-maps-are-not-o-1-91c1e61110bf) 这篇文章中，作者测试了 Golang Map 查找的实际性能，不过作者是基于 Go1.4 的，版本有点旧了。下面是我修改了作者的测试案例后在 Go1.10 下跑出来的结果。
+有序 Map 在 Golang 中应该是十分常见的需求，Map 最大的优势就是其查找性能，**理论上** Map 查找的时间复杂度为常数级。但实际情况我们可以通过 benchmark 来验证。在 [Go Maps Don’t Appear to be O(1)](https://medium.com/@ConnorPeet/go-maps-are-not-o-1-91c1e61110bf) 这篇文章中，作者测试了 Golang Map 查找的实际性能，不过作者是基于 Go1.4 的，版本有点旧了。下面是我修改了作者的测试案例后在 Go1.10 下跑出来的结果。
 
 ![](https://user-images.githubusercontent.com/19553554/51075377-83f8cd80-16c5-11e9-9973-4904a4661aeb.png)
 
-上图是使用 [go-echarts](https://github.com/chenjiandongx/go-echarts) 绘制的。测试是通过与二分查找来对比的，二分查找的时间复杂度为 **O(log2n)**。很明显，在 10e5 数量级下两者的性能差别还不是特别大，主要差距是在 10e6 后体现的。结论：Map 的性能优于 **O(log2n)**，但不是常数级。
+上图是使用 [go-echarts](https://github.com/go-echarts/go-echarts) 绘制的。测试通过与二分查找对比，二分查找的时间复杂度为 **O(log2n)**。很明显，在 10e5 数量级下两者的性能差别还不是特别大，主要差距是在 10e6 后体现的。结论：Map 的性能优于 **O(log2n)**，但不是常数级。
 
 **collections.OrderdMap 🆚 cevaris/ordered_map**
 
-本来我一直使用的是 [cevaris/ordered_map](https://github.com/cevaris/ordered_map)，后来自己重新实现了一个。实现完就与它进行了性能测试对比。它是基于两个 Map 实现的，而我是使用的 Map+LinkedList，LinkedList 在删除和插入操作上的时间复杂度都是 **O(1)**，用其来存储 Map key 的顺序是一个很好的选择。
+本来我一直使用的是 [cevaris/ordered_map](https://github.com/cevaris/ordered_map)，后来自己重新实现了一个。实现完就与其进行了性能测试对比，它是基于两个 Map 实现的，而我是使用的 Map+LinkedList，LinkedList 在删除和插入操作上的时间复杂度都是 **O(1)**，用其来存储 Map key 的顺序是一个很好的选择。
 
 同样的测试代码，BenchMark 结果如下
 ```shell
@@ -298,7 +301,7 @@ fmt.Println(tree.Delete(10))
 
 📣 讨论
 
-AVL 树是自平衡树的一种，其通过左旋和右旋来调整自身的平衡性，使其左右子树的高度差最大不超过 1。AVL 在插入、查找、删除的平时时间复杂度都是 O(logn)，在基本的 BST（二叉查找树）中，理想情况的效率也是为 O(logn)，但由于操作的性能其实是依赖于树的高度，而 BST 最坏的情况会导致树退化成链表，此时时间复杂度就变为 O(n)，为了解决这个问题，自平衡二叉树应运而生。
+AVL 树是自平衡树的一种，其通过左旋和右旋来调整自身的平衡性，使其左右子树的高度差最大不超过 1。AVL 在插入、查找、删除的平时时间复杂度都是 O(logn)，在基本的 BST（二叉查找树）中，理想情况的效率也是为 O(logn)，但由于操作的性能其实是依赖于树的高度，BST 最坏的情况会导致树退化成链表，此时时间复杂度就变为 O(n)，为了解决这个问题，自平衡二叉树应运而生。
 
 AVL 的主要精髓在于`旋转`，旋转分为 4 种情况，左旋，左旋+右旋，右旋，右旋+左旋。调整树结构后需要重新计算树高。
 
@@ -467,7 +470,7 @@ BenchmarkMergeSort-8                 300           4448222 ns/op
 
 在数据基本降序的情况下，冒泡和直接插入排序一如既往的差，快排又给跪了，又是 O(n^2)...
 
-那自己写的排序和 Golang 官方提供的 sort.Sort 排序方法对比，效率如何呢
+那自己实现的排序和 Golang 官方提供的 sort.Sort 排序方法对比，效率如何呢
 
 
 定义一个 struct，实现 sort.Interface
@@ -502,7 +505,7 @@ BenchmarkHeapSort-8                          100          14501199 ns/op
 BenchmarkMergeSort-8                         100          13793086 ns/op
 ```
 
-是不是眼前一亮 😂，自己写的快排居然这么厉害，比标准的 sort 快了不止两倍？？？ 这里出现这样的情况的主要原因是 sort 实现了 sort.Interface，该接口需要有三个方法 Less()/Len()/Swap()，而接口的类型转换是有成本的。**通用意味着兼容，兼容以为着妥协，这是专和精权衡后的结果**。当然，标准的 sort 大部分情况的性能都是可以接受的，也是比较方便的。但当你需要追求极致性能的话，自己针对特定需求实现排序算法肯定会是更好的选择。
+是不是眼前一亮 😂，自己写的快排居然这么厉害，比标准的 sort 快了不止两倍？？？ 这里出现这种情况的主要原因是 sort 实现了 sort.Interface，该接口需要有三个方法 Less()/Len()/Swap()，而接口的类型转换是有成本的。**通用意味着兼容，兼容意味着妥协，这是专和精权衡后的结果**。当然，标准的 sort 大部分情况的性能都是可接受的。但当你需要追求极致性能的话，自己针对特定需求实现排序算法肯定会是更好的选择。
 
 **数据升序分布**
 ```shell
@@ -528,7 +531,7 @@ emmmmmmm，同上 😓
 
 关于官方排序的具体实现，可以参考 [src/sort/sort.go](https://golang.org/src/sort/sort.go)，实际上是直接插入排序，快速排序，堆排序和归并排序的组合排序。[这篇文章](https://github.com/polaris1119/The-Golang-Standard-Library-by-Example/blob/master/chapter03/03.1.md) 对这部分有介绍
 
-最后，按官方的排序针对自己想要的数据类型排序 不使用接口那套 会是什么效率呢 对比上面排序中最快的算法以及接口实现的 sort
+最后，按官方的排序针对自己想要的数据类型排序，但不使用接口那套，对比上面排序中最快的算法以及接口实现的 sort
 
 **数据随机分布**
 ```shell
@@ -553,7 +556,7 @@ BenchmarkStdSortWithoutInterface-8          1000           1689479 ns/op
 
 🖖 [StdSortWithoutInterface](https://github.com/chenjiandongx/collections/blob/master/std_sort.go) 完胜！！！
 
-故事到这里还没有结束，我们还可以进一步思考如何获得更高的排序性能，没错，就是 goroutine，将一个数据切分成两半，分别使用 `StdSortWithoutInterface` 排序，将排序后的结果进行一次归并排序，就可以得到最终的有序数组，这次我们测试的数组长度为 **10e5**
+我们还可以进一步思考如何获得更高的排序性能，使用 goroutine 将一个数据切分成两半，分别使用 `StdSortWithoutInterface` 排序，将排序后的结果进行一次归并排序，就可以得到最终的有序数组，这次我们测试的数组长度为 **10e5**
 
 为了验证真正的`并行计算` 我们将分别测试 cpu 数量为 1, 2, 8 的情况
 ```shell
